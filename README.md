@@ -26,3 +26,4 @@ A flask project w/ bluetooth integration
 To run tests:
 ```sh
 ./test.sh
+
