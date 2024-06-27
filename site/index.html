@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scanner</title>
+    <script>
+        async function scan() {
+            const response = await fetch('/scan');
+            const devices = await response.json();
+            const resultDiv = document.getElementById('results');
+            devices.forEach(device => {
+                const deviceInfo = document.createElement('p');
+                deviceInfo.textContent = `Name: ${device.name}, Address: ${device.address}`;
+                resultDiv.appendChild(deviceInfo);
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>Scanner </h1>
+    <button onclick="scan()">Scan for Devices</button>
+    <div id="results"></div>
+
+</body>
+</html>
