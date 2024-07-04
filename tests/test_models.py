@@ -1,20 +1,16 @@
 import pytest
-import sqlite3
-
-from app.models import get_db, init_db
+from app import app
 
 @pytest.fixture
-def init_database():
-    app.config['TESTING'] = True
-    init_db()
-    db = get_db()
-    yield db
-    db.execute('DROP TABLE user')
-    db.commit()
+def app_context():
+    with app.app_context():
+        app.init_db()
+        yield
+        app.get_db().execute('DROP TABLE IF EXISTS user')
+        app.get_db().commit()
 
-def test_user_model(init_database):
-    """Test the User model"""
-    db = init_database
+def test_user_model(app_context):
+    db = app.get_db()
     db.execute("INSERT INTO user (username, password) VALUES (?, ?)",
                ('testuser', 'password'))
     db.commit()
