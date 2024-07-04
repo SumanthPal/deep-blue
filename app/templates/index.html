@@ -17,12 +17,18 @@
                 resultDiv.appendChild(deviceInfo);
             });
         }
+        function openWindow() {
+            window.open('/data');
+        }
     </script>
 </head>
 <body>
 <h1>Scanner </h1>
     <button onclick="scan()">Scan for Devices</button>
+    <button onclick="openWindow()">Check Database</button>
 
+
+<h3>Add</h3>
 <form action="/add" method="POST" >
     <label for="add_name">Add Name</label>
     <input type="text" name="name" id="add_name" placeholder="Name"></input>
@@ -33,6 +39,16 @@
     <button type="add">Add</button>
 
     
+
+</form>
+
+<h3>Delete</h3>
+<form action="/delete" method="POST" >
+    <label for="delete_name">Delete Name</label>
+    <input type="text" name="name" id="delete_name" placeholder="Name" />
+    <button type="delete">Delete</button>
+
+
 
 </form>
 

@@ -28,6 +28,14 @@ def add_db(name, address):
         cursor = db.cursor()
         cursor.execute("INSERT INTO user(name, address) VALUES(?,?)", (name, address))
         db.commit()
+
+def delete_db(name):
+    with current_app.app_context():
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('DELETE FROM user WHERE name = ?', (name,))
+        db.commit()
+
 def init_db():
     """Initialize database by creating necessary tables if they do not exist."""
     with current_app.app_context():
