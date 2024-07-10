@@ -1,15 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .user-list {
+        list-style-type: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    .user-list li {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+    }
+
+    .user-list li:last-child {
+        border-bottom: none;
+    }
+
+    .label {
+        margin-right: 5px;
+        font-weight: bold;
+        color: #1f375d; /* Dark blue */
+    }
+
+    .user-id,
+    .user-name,
+    .user-address {
+        flex: 1;
+    }
+
+    .user-id {
+        font-weight: bold;
+    }
+
+    .user-address {
+        color: #888;
+    }
+
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0c4c8a;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #1f375d;
+    }
+
+</style>
 <head>
     <meta charset="UTF-8">
     <title>User List</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <h1>User List</h1>
-<ul>
-    {% for user in users %}
-    <li>{{ user[0] }} - {{ user[1] }} - {{ user[2]}}</li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <ul class="user-list">
+        {% for user in users %}
+        <li>
+            <span class="label">ID:</span>
+            <span class="user-id">{{ user[0] }}</span>
+            <span class="label">Name:</span>
+            <span class="user-name">{{ user[1] }}</span>
+            <span class="label">Address:</span>
+            <span class="user-address">{{ user[2] }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="/" class="back-button">Back to Main Page</a>
+</div>
 </body>
 </html>

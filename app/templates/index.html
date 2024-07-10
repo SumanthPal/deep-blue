@@ -2,57 +2,385 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to BLE Scanner</title>
-    <script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <style>
+        /* Reset default margin and padding */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #ADDFDE;
+            color: #1F375D;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
+        /* Header styling */
+        header {
+            width: 100%;
+            background-color: #0C4C8A;
+            color: #fff;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #0a84d2;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: #0a84d2;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            display: flex;
+            color: #0a84d2;
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+            color: #0a84d2;
+        }
+
+        .nav-links a {
+            color: #0a84d2;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #97D5E0;
+        }
+
+        /* Login button styling */
+
+        .login-button,
+        .logout-button {
+            background-color: #0C4C8A;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .login-button:hover,
+        .logout-button:hover {
+            background-color: #1F375D;
+        }
+
+        /* Additional styling if needed */
+        .login-button {
+            margin-right: 10px; /* Adjust spacing between buttons */
+        }
+
+        /* Container for sections */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Flash messages */
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .flashes li {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .flashes .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .flashes .success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        /* Add and Delete section */
+        .add-delete {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .add-delete h3 {
+            color: #0C4C8A;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .add-delete form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .add-delete label {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 300px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .add-delete input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-delete button {
+            background-color: #0C4C8A;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .add-delete button:hover {
+            background-color: #1F375D;
+        }
+
+        /* Results section */
+        .results {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .results h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #0C4C8A;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #0C4C8A;
+            color: #fff;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tbody tr:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        /* Copy feedback */
+        .copy-feedback {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(31, 55, 93, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+
+    <script>
+        const INTERVAL = 900000;
+        var myInterval;
 
         async function scan() {
             const response = await fetch('/scan');
             const devices = await response.json();
-            const resultDiv = document.getElementById('results');
+            const resultDiv = document.getElementById('tbody');
             resultDiv.innerHTML = '';
             devices.forEach(device => {
-                const deviceInfo = document.createElement('p');
-                deviceInfo.textContent = `Name: ${device.name}, Address: ${device.address}`;
-                resultDiv.appendChild(deviceInfo);
+                const row = document.createElement('tr');
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = device.name ? device.name : 'Unknown';
+                nameCell.classList.add('name-cell'); // Add class for name cell
+                row.appendChild(nameCell);
+
+                const addressCell = document.createElement('td');
+                addressCell.textContent = device.address;
+                addressCell.classList.add('address-cell'); // Add class for address cell
+                row.appendChild(addressCell);
+
+                // Event listener for name cell
+                nameCell.addEventListener('click', () => {
+                    copyToClipboard(device.name);
+                });
+
+                // Event listener for address cell
+                addressCell.addEventListener('click', () => {
+                    copyToClipboard(device.address);
+                });
+
+                resultDiv.appendChild(row);
             });
         }
+
         function openWindow() {
             window.open('/data');
+        }
+
+        function copyToClipboard(text) {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = text;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            showCopyFeedback();
+        }
+
+        function showCopyFeedback() {
+            const copyFeedback = document.getElementById('copy-feedback');
+            copyFeedback.style.display = 'block';
+            setTimeout(() => {
+                copyFeedback.style.display = 'none';
+            }, 1500);
         }
     </script>
 </head>
 <body>
-<h1>Scanner </h1>
-    <button onclick="scan()">Scan for Devices</button>
-    <button onclick="openWindow()">Check Database</button>
-
-
-<h3>Add</h3>
-<form action="/add" method="POST" >
-    <label for="add_name">Add Name</label>
-    <input type="text" name="name" id="add_name" placeholder="Name"></input>
-
-    <label for="add_address">Add Address</label>
-    <input type="text" name="address" id="add_address" placeholder="Address"></input>
-
-    <button type="add">Add</button>
-
-    
-
-</form>
-
-<h3>Delete</h3>
-<form action="/delete" method="POST" >
-    <label for="delete_name">Delete Name</label>
-    <input type="text" name="name" id="delete_name" placeholder="Name" />
-    <button type="delete">Delete</button>
+<header>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">Deep Blue</a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="scan()">Start Scan</a></li>
+                <li><a href="#" onclick="clearInterval(myInterval)">Stop Scan</a></li>
+                <li><a href="#" onclick="openWindow()">Check Database</a></li>
+                <li><a href="/login" class="login-button">Login</a></li>
+                <li><a href="/logout" class="logout-button">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 
 
-</form>
+<div class="container">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 
-    <div id="results"></div>
+
+    {% if current_user.is_authenticated %}
+    <p>Welcome, {{ current_user.username }}!</p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+    <p>You are not logged in.</p>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+    <section class="add-delete">
+        <h3>Register Device</h3>
+        <form action="/add" method="POST">
+            <label for="add_name">Name</label>
+            <input type="text" id="add_name" name="name" placeholder="Name">
+
+            <label for="add_address">Address</label>
+            <input type="text" id="add_address" name="address" placeholder="Address">
+
+            <button type="submit">Add</button>
+        </form>
+
+        <h3>Delete Device</h3>
+        <form action="/delete" method="POST">
+            <label for="delete_name">Name</label>
+            <input type="text" id="delete_name" name="name" placeholder="Name">
+
+            <button type="submit">Delete</button>
+        </form>
+    </section>
+
+    <section class="results">
+        <h2>Scan Results</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </section>
+</div>
+
+<div class="copy-feedback" id="copy-feedback">
+    Copied to clipboard!
+</div>
 
 </body>
 </html>
